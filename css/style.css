@@ -16,15 +16,15 @@ body{
 
 .botones{
     padding: 9px;
-    border-radius: 80px;
+    border-radius: 15px;
     background-color: transparent;
     border: none;
 }
 
 .botones a{
-    background-color: #0a2be9;
+    background-color: #D32A73;
     padding: 9px;
-    border-radius: 80px;
+    border-radius: 15px;
     -webkit-border-radius: 80px;
     -moz-border-radius: 80px;
     -ms-border-radius: 80px;
@@ -33,7 +33,7 @@ body{
 }
 
 .botones a:focus{
-    background-color: rgb(50, 194, 194);
+    background-color: #B12361;
 }
 
 .greetings{
