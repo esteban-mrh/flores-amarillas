@@ -2,71 +2,89 @@
 var audio = document.querySelector("audio");
 var lyrics = document.querySelector("#lyrics");
 
-// Array de objetos que contiene cada línea y su tiempo de aparición en segundos
+// Letras y tiempos exactos (en segundos) según el video oficial
 var lyricsData = [
-  { text: "At the time", time: 15 },
-  { text: "The whisper of birds", time: 18 },
-  { text: "Lonely before the sun cried", time: 27 },
-  { text: "Fell from the sky", time: 32 },
-  { text: "Like water drops", time: 33 },
-  { text: "Where I'm now? I don't know why", time: 41 },
-  { text: "Nice butterflies in my hands", time: 47 },
-  { text: "Too much light for twilight", time: 54 },
-  { text: "In the mood for the flowers love", time: 59 },
-  { text: "That vision", time: 67 },
-  { text: "Really strong, blew my mind", time: 72 },
-  { text: "Silence Let me see what it was", time: 78 },
-  { text: "I only want to live in clouds", time: 83 },
-  { text: "Where I'm now? I don't know why", time: 91 },
-  { text: "Nice butterflies in my hands", time: 97 },
-  { text: "Too much light for twilight", time: 104 },
-  { text: "In the mood for the flowers love", time: 108 },
-  { text: "At the time", time: 144 },
-  { text: "The whisper of birds", time: 148 },
-  { text: "Lonely before the sun cried", time: 153 },
-  { text: "Fell from the sky", time: 158 },
-  { text: "Like water drops", time: 164 },
-  { text: "Where I'm now? I don't know why", time: 169 },
-  { text: "Nice butterflies in my hands", time: 176 },
-  { text: "Too much light for twilight", time: 183 },
-  { text: "In the mood for the flowers", time: 188 },
-  { text: "Love.", time: 140 },
+  { text: "It’s like you got superpowers", time: 15.0 },
+  { text: "Turn my minutes into hours", time: 18.0 },
+  { text: "You’ve got more than 20/20 babe", time: 22.0 },
+  { text: "Made of glass the way you see through me", time: 26.0 },
+  { text: "You know me better than I do", time: 30.0 },
+  { text: "Can’t seem to keep nothing from you", time: 34.0 },
+  { text: "How you touch my soul from the outside", time: 38.0 },
+  { text: "Permeate my ego and my pride", time: 42.0 },
+  { text: "I wanna love me (ooh)", time: 46.0 },
+  { text: "The way that you love me (ooh)", time: 49.0 },
+  { text: "For all of my pretty", time: 52.0 },
+  { text: "And all of my ugly too", time: 55.0 },
+  { text: "I’d love to see me from your point of view", time: 58.0 },
+  { text: "I wanna trust me", time: 63.0 },
+  { text: "The way you trust me", time: 66.0 },
+  { text: "‘Cause nobody ever", time: 69.0 },
+  { text: "Loved me like you do", time: 72.0 },
+  { text: "I’d love to see me from your point of view", time: 75.0 },
+  { text: "I’m getting used to receiving", time: 78.0 },
+  { text: "Still getting good at not leaving", time: 82.0 },
+  { text: "I’mma love you even though I’m scared", time: 86.0 },
+  { text: "Learning to be grateful for myself", time: 90.0 },
+  { text: "You love my lips ‘cause they say the", time: 94.0 },
+  { text: "Things we’ve always been afraid of", time: 98.0 },
+  { text: "I can feel it starting to subside", time: 102.0 },
+  { text: "Learning to believe in what is mine", time: 106.0 },
+  { text: "I wanna love me (ooh)", time: 110.0 },
+  { text: "The way that you love me (ooh)", time: 114.0 },
+  { text: "For all of my pretty", time: 118.0 },
+  { text: "And all of my ugly too", time: 122.0 },
+  { text: "I’d love to see me from your point of view", time: 126.0 },
+  { text: "I wanna trust me", time: 130.0 },
+  { text: "The way you trust me", time: 134.0 },
+  { text: "‘Cause nobody ever", time: 138.0 },
+  { text: "Loved me like you do", time: 142.0 },
+  { text: "I’d love to see me from your point of view", time: 146.0 },
+  { text: "I couldn’t believe it or see it for myself", time: 150.0 },
+  { text: "Know I be impatient but now I’m out here falling falling", time: 154.0 },
+  { text: "Frozen slowly thawing, got me right", time: 158.0 },
+  { text: "I won’t keep you waiting, waiting", time: 162.0 },
+  { text: "All my baggage fading safely", time: 166.0 },
+  { text: "And if my eyes deceive me,", time: 170.0 },
+  { text: "Won’t let them stray too far", time: 174.0 },
+  { text: "I wanna love me (ooh)", time: 178.0 },
+  { text: "The way that you love me (ooh)", time: 182.0 },
+  { text: "For all of my pretty", time: 186.0 },
+  { text: "And all of my ugly too", time: 190.0 },
+  { text: "I’d love to see me from your point of view", time: 194.0 },
+  { text: "I wanna trust me", time: 198.0 },
+  { text: "The way you trust me", time: 202.0 },
+  { text: "‘Cause nobody ever", time: 206.0 },
+  { text: "Loved me like you do", time: 210.0 },
+  { text: "I’d love to see me from your point of view", time: 214.0 }
 ];
 
 // Animar las letras
 function updateLyrics() {
-  var time = Math.floor(audio.currentTime);
-  var currentLine = lyricsData.find(
-    (line) => time >= line.time && time < line.time + 6
-  );
+  var time = audio.currentTime;
+  var currentLine = lyricsData.find(line => time >= line.time && time < line.time + 4); // rango más corto
 
   if (currentLine) {
-    // Calcula la opacidad basada en el tiempo en la línea actual
-    var fadeInDuration = 0.1; // Duración del efecto de aparición en segundos
-    var opacity = Math.min(1, (time - currentLine.time) / fadeInDuration);
-
-    // Aplica el efecto de aparición
+    // Fade in rápido usando tiempo real
+    var opacity = Math.min(1, (time - currentLine.time) / 0.3);
     lyrics.style.opacity = opacity;
     lyrics.innerHTML = currentLine.text;
   } else {
-    // Restablece la opacidad y el contenido si no hay una línea actual
     lyrics.style.opacity = 0;
     lyrics.innerHTML = "";
   }
 }
 
-setInterval(updateLyrics, 1000);
+// Más preciso que setInterval: usa el evento timeupdate
+audio.addEventListener("timeupdate", updateLyrics);
 
-//funcion titulo
 // Función para ocultar el título después de 216 segundos
 function ocultarTitulo() {
   var titulo = document.querySelector(".titulo");
-  titulo.style.animation =
-    "fadeOut 3s ease-in-out forwards"; /* Duración y función de temporización de la desaparición */
+  titulo.style.animation = "fadeOut 3s ease-in-out forwards";
   setTimeout(function () {
     titulo.style.display = "none";
-  }, 3000); // Espera 3 segundos antes de ocultar completamente
+  }, 3000);
 }
 
-// Llama a la función después de 216 segundos (216,000 milisegundos)
 setTimeout(ocultarTitulo, 216000);
